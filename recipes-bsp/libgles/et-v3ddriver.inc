@@ -5,12 +5,12 @@ LICENSE = "CLOSED"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 PROVIDES = "virtual/libgles2 virtual/egl"
-DEPENDS = "xtrend-v3ddriver-headers"
+DEPENDS = "et-v3ddriver-headers"
 
 PV = "${SRCDATE}"
 PR = "r2"
 
-SRC_URI = "https://github.com/neo-pli-bsps/meta-xtrend/releases/download/Binaries-1.0/et10000-v3ddriver-20170322.zip"
+SRC_URI = "http://source.mynonpublic.com/xtrend/${MACHINE_DRIVER}-v3ddriver-${SRCDATE}.zip"
 
 S = "${WORKDIR}"
 
@@ -25,6 +25,7 @@ do_install_append() {
 	install -m 0755 ${S}/libnxpl.so ${D}${libdir}/
 	install -m 0755 ${S}/libnexus.so ${D}${libdir}/
 	install -m 0755 ${S}/libv3ddriver.so ${D}${libdir}/
+	install -m 0755 ${S}/libnxclient.so ${D}${libdir}/
 	ln -s libv3ddriver.so ${D}${libdir}/libEGL.so
 	ln -s libv3ddriver.so ${D}${libdir}/libGLESv2.so
 }
@@ -32,6 +33,6 @@ do_install_append() {
 FILES_${PN} = "/usr/lib/*"
 FILES_${PN}-dev = "/usr/include/*"
 
-RPROVIDES_${PN} = "virtual/libgles2 virtual/egl libnxpl.so libnexus.so libv3ddriver.so libGLESv2.so libEGL.so"
+RPROVIDES_${PN} = "virtual/libgles2 virtual/egl libnxpl.so libnexus.so libv3ddriver.so libnxclient.so libGLESv2.so libEGL.so"
 
-INSANE_SKIP_${PN} += "already-stripped dev-so ldflags"
+INSANE_SKIP_${PN} += "already-stripped dev-so"
