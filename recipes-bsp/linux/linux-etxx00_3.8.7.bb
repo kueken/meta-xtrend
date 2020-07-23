@@ -28,6 +28,7 @@ SRC_URI += "https://github.com/neo-pli-bsps/meta-xtrend/releases/download/Binari
 	file://kernel-gcc7.patch \
 	file://kernel-gcc8.patch \
 	file://kernel-gcc9.patch \
+	file://kernel-gcc10.patch \
 	file://0001-Revert-default-authentication-needs-to-be-at-least-n.patch \
 	file://0001-Revert-MIPS-mm-Add-compound-tail-page-_mapcount-when.patch \
 	file://0001-Revert-MIPS-Add-fast-get_user_pages.patch \
