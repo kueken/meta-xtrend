@@ -2,25 +2,25 @@
 MACHINE_FEATURES_BACKFILL_CONSIDERED = "rtc"
 
 
-MACHINE_ESSENTIAL_EXTRA_RDEPENDS = "\
+MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "\
 	et-dvb-modules-${MACHINE} \
 	"
 
-MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS = "\
+MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "\
 	kernel-module-cdfs \
 	"
 
 KERNEL_MODULE_AUTOLOAD += "xfs"
 
-MACHINE_EXTRA_RRECOMMENDS = " \
+MACHINE_EXTRA_RRECOMMENDS += "\
 	gst-plugin-dvbmediasink \
 	ntfs-3g \
 	"
 
-DVBMEDIASINK_CONFIG = "--with-wma --with-wmv --with-pcm --with-dts --with-eac3"
+DVBMEDIASINK_CONFIG = "--with-wma --with-wmv --with-pcm --with-dts --with-eac3 --with-max-pcmrate-48"
 
 TARGET_ARCH = "mipsel"
-DEFAULTTUNE ?= "mips32el"
+DEFAULTTUNE = "mips32el"
 
 KERNEL_IMAGETYPE = "vmlinux"
 KERNEL_OUTPUT = "${KERNEL_IMAGETYPE}"
@@ -37,7 +37,7 @@ IMGDEPLOYDIR ?= "${DEPLOY_DIR_IMAGE}"
 IMAGEVERSION := "${DISTRO_NAME}-${DISTRO_VERSION}-${DATE}"
 IMAGEVERSION[vardepsexclude] = "DATE"
 
-IMAGE_CMD_ubi_append = " \
+IMAGE_CMD_ubi_append = "\
 	mkdir -p ${IMGDEPLOYDIR}/${IMAGEDIR}; \
 	cp -f ${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.ubi ${IMGDEPLOYDIR}/${IMAGEDIR}/rootfs.bin; \
 	gzip -9c ${DEPLOY_DIR_IMAGE}/vmlinux-${MACHINE}.bin > ${IMGDEPLOYDIR}/${IMAGEDIR}/kernel.bin; \
