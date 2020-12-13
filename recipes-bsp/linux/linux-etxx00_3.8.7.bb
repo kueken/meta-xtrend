@@ -2,7 +2,7 @@ DESCRIPTION = "Linux kernel for ${MACHINE}"
 SECTION = "kernel"
 LICENSE = "GPLv2"
 
-COMPATIBLE_MACHINE = "et[5,6,9]+"
+inherit kernel machine_kernel_pr
 
 KERNEL_RELEASE = "3.8.7"
 
@@ -21,7 +21,7 @@ PKG_${KERNEL_PACKAGE_NAME}-image = "kernel-image"
 RPROVIDES_${KERNEL_PACKAGE_NAME}-base = "kernel-${KERNEL_VERSION}"
 RPROVIDES_${KERNEL_PACKAGE_NAME}-image = "kernel-image-${KERNEL_VERSION}"
 
-SRC_URI += "https://github.com/neo-pli-bsps/meta-xtrend/releases/download/Binaries-1.0/linux-3.8.7.tar.gz \
+SRC_URI = "https://github.com/neo-pli-bsps/meta-xtrend/releases/download/Binaries-1.0/linux-3.8.7.tar.gz \
 	file://defconfig \
 	file://0001-kernel-add-support-for-gcc-5.patch \
 	file://kernel-gcc6.patch \
@@ -71,31 +71,36 @@ SRC_URI += "https://github.com/neo-pli-bsps/meta-xtrend/releases/download/Binari
 	file://makefile-silence-warnings.patch \
 	"
 
-inherit kernel machine_kernel_pr
-
 S = "${WORKDIR}/linux-${PV}"
+B = "${WORKDIR}/build"
 
 export OS = "Linux"
 KERNEL_OBJECT_SUFFIX = "ko"
 KERNEL_OUTPUT = "vmlinux"
 KERNEL_IMAGETYPE = "vmlinux"
-KERNEL_IMAGEDEST = "/tmp"
+KERNEL_IMAGEDEST = "tmp"
 
-FILES_${KERNEL_PACKAGE_NAME}-image = "${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}*"
+FILES_${KERNEL_PACKAGE_NAME}-image = "/${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz"
 
 kernel_do_install_append() {
-	${STRIP} ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION}
-	gzip -9c ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION} > ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
-	rm ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION}
+    ${STRIP} ${D}/${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION}
+    gzip -9c ${D}/${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION} > ${D}/${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
+    rm ${D}/${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION}
 }
 
 pkg_postinst_kernel-image () {
-	if [ "x$D" == "x" ]; then
-		if [ -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz ] ; then
-			flash_eraseall /dev/mtd1
-			nandwrite -p /dev/mtd1 /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
-			rm -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
-		fi
-	fi
-	true
+    if [ "x$D" == "x" ]; then
+        if [ -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz ] ; then
+            flash_erase /dev/${MTD_KERNEL} 0 0
+            nandwrite -p /dev/${MTD_KERNEL} /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
+            rm -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
+        fi
+    fi
+    true
 }
+
+do_rm_work() {
+}
+
+# extra tasks
+addtask kernel_link_images after do_compile before do_install
