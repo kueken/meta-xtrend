@@ -4,14 +4,13 @@ LICENSE = "GPLv2"
 
 inherit kernel machine_kernel_pr
 
+MACHINE_KERNEL_PR_append = ".14"
 KERNEL_RELEASE = "3.8.7"
 
 SRC_URI[md5sum] = "5f6aaac90a4587df34e418bedd7d40eb"
 SRC_URI[sha256sum] = "afc3e654b779f4b994a0d455d6ad12f46ff0dbec2fe222a4f55925744b498218"
 
 LIC_FILES_CHKSUM = "file://${WORKDIR}/linux-${PV}/COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
-
-MACHINE_KERNEL_PR_append = ".13"
 
 # By default, kernel.bbclass modifies package names to allow multiple kernels
 # to be installed in parallel. We revert this change and rprovide the versioned
@@ -29,6 +28,7 @@ SRC_URI = "https://github.com/neo-pli-bsps/meta-xtrend/releases/download/Binarie
 	file://kernel-gcc8.patch \
 	file://kernel-gcc9.patch \
 	file://kernel-gcc10.patch \
+	file://Kernelupdate13.patch \
 	file://0001-Revert-default-authentication-needs-to-be-at-least-n.patch \
 	file://0001-Revert-MIPS-mm-Add-compound-tail-page-_mapcount-when.patch \
 	file://0001-Revert-MIPS-Add-fast-get_user_pages.patch \
