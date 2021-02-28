@@ -72,7 +72,6 @@ SRC_URI = "https://github.com/neo-pli-bsps/meta-xtrend/releases/download/Binarie
 	"
 
 S = "${WORKDIR}/linux-${PV}"
-B = "${WORKDIR}/build"
 
 export OS = "Linux"
 KERNEL_OBJECT_SUFFIX = "ko"
@@ -89,14 +88,14 @@ kernel_do_install_append() {
 }
 
 pkg_postinst_kernel-image () {
-    if [ "x$D" == "x" ]; then
-        if [ -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz ] ; then
-            flash_erase /dev/${MTD_KERNEL} 0 0
-            nandwrite -p /dev/${MTD_KERNEL} /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
-            rm -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
-        fi
-    fi
-    true
+	if [ "x$D" == "x" ]; then
+		if [ -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz ] ; then
+			flash_eraseall /dev/mtd1
+			nandwrite -p /dev/mtd1 /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
+			rm -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
+		fi
+	fi
+	true
 }
 
 do_rm_work() {
