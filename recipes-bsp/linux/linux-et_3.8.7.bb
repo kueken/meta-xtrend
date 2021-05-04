@@ -4,7 +4,7 @@ LICENSE = "GPLv2"
 
 inherit kernel machine_kernel_pr
 
-MACHINE_KERNEL_PR_append = ".1"
+MACHINE_KERNEL_PR_append = ".3"
 KERNEL_RELEASE = "3.8.7"
 
 SRC_URI[mips.md5sum] = "5f6aaac90a4587df34e418bedd7d40eb"
