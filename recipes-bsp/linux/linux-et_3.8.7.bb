@@ -4,7 +4,7 @@ LICENSE = "GPLv2"
 
 inherit kernel machine_kernel_pr
 
-MACHINE_KERNEL_PR_append = ".1"
+MACHINE_KERNEL_PR_append = ".3"
 KERNEL_RELEASE = "3.8.7"
 
 SRC_URI[mips.md5sum] = "5f6aaac90a4587df34e418bedd7d40eb"
@@ -23,6 +23,7 @@ RPROVIDES_${KERNEL_PACKAGE_NAME}-image = "kernel-image-${KERNEL_VERSION}"
 
 SRC_URI = "http://downloads.mutant-digital.net/linux-${PV}-${ARCH}.tar.gz;name=${ARCH} \
 	file://defconfig \
+	file://Kernelupdate13.patch \
 	file://0001-Revert-default-authentication-needs-to-be-at-least-n.patch \
 	file://0001-Revert-MIPS-mm-Add-compound-tail-page-_mapcount-when.patch \
 	file://0001-Revert-MIPS-Add-fast-get_user_pages.patch \
